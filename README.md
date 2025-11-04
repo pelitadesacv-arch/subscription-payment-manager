@@ -1,46 +1,77 @@
-# subscriptionfull
+# 🌀 Subscription Payment Manager (Algorand dApp)
 
-This starter full stack project has been generated using AlgoKit. See below for default getting started instructions.
+A decentralized **subscription payment manager** built on **Algorand**, designed to handle recurring payments securely and transparently using smart contracts.
 
-## Setup
+---
 
-### Initial setup
-1. Clone this repository to your local machine.
-2. Ensure [Docker](https://www.docker.com/) is installed and operational. Then, install `AlgoKit` following this [guide](https://github.com/algorandfoundation/algokit-cli#install).
-3. Run `algokit project bootstrap all` in the project directory. This command sets up your environment by installing necessary dependencies, setting up a Python virtual environment, and preparing your `.env` file.
-4. In the case of a smart contract project, execute `algokit generate env-file -a target_network localnet` from the `subscriptionfull-contracts` directory to create a `.env.localnet` file with default configuration for `localnet`.
-5. To build your project, execute `algokit project run build`. This compiles your project and prepares it for running.
-6. For project-specific instructions, refer to the READMEs of the child projects:
-   - Smart Contracts: [subscriptionfull-contracts](projects/subscriptionfull-contracts/README.md)
-   - Frontend Application: [subscriptionfull-frontend](projects/subscriptionfull-frontend/README.md)
+## 📜 Project Description
 
-> This project is structured as a monorepo, refer to the [documentation](https://github.com/algorandfoundation/algokit-cli/blob/main/docs/features/project/run.md) to learn more about custom command orchestration via `algokit project run`.
+**Subscription Payment Manager** is a lightweight Algorand smart contract that enables users to create, manage, and cancel subscriptions directly on-chain.  
+It leverages **Algorand ARC-4 ABI** and **box storage** to keep track of users’ subscription data, payment intervals, and status — all without centralized servers.
 
-### Subsequently
+This project is perfect for dApps that need **recurring billing** or **subscription tracking**, such as:
+- Decentralized SaaS tools  
+- NFT or DAO membership payments  
+- Content creator subscriptions  
 
-1. If you update to the latest source code and there are new dependencies, you will need to run `algokit project bootstrap all` again.
-2. Follow step 3 above.
+---
 
-## Tools
+## 💡 What It Does
 
-This project makes use of Python and React to build Algorand smart contracts and to provide a base project configuration to develop frontends for your Algorand dApps and interactions with smart contracts. The following tools are in use:
+The smart contract provides a complete on-chain system for managing subscriptions:
 
-- Algorand, AlgoKit, and AlgoKit Utils
-- Python dependencies including Poetry, Black, Ruff or Flake8, mypy, pytest, and pip-audit
-- React and related dependencies including AlgoKit Utils, Tailwind CSS, daisyUI, use-wallet, npm, jest, playwright, Prettier, ESLint, and Github Actions workflows for build validation
+1. **Create subscriptions** — Users can define the amount and interval (e.g., monthly, weekly).  
+2. **Check payment due** — The system automatically detects if the next payment is due based on the current blockchain timestamp.  
+3. **Cancel or delete subscriptions** — Users can stop or remove their subscriptions anytime.  
+4. **Track total subscriptions** — The contract keeps a counter of all subscriptions ever created.  
 
-### VS Code
+---
 
-It has also been configured to have a productive dev experience out of the box in [VS Code](https://code.visualstudio.com/), see the [backend .vscode](./backend/.vscode) and [frontend .vscode](./frontend/.vscode) folders for more details.
+## ⚙️ Features
 
-## Integrating with smart contracts and application clients
+| Feature | Description |
+|----------|-------------|
+| 🏗️ **Create Subscription** | Register a new recurring payment with a set amount and interval. |
+| 👀 **View Subscription Info** | View details of your subscription (amount, interval, and status). |
+| ⏰ **Check Payment Due** | Automatically determine if it’s time to renew payment. |
+| ❌ **Cancel Subscription** | Instantly deactivate your subscription without deleting data. |
+| 🧹 **Delete Subscription** | Permanently remove a subscription from box storage. |
+| 🔢 **Get Total Subscriptions** | Retrieve how many subscriptions have been created overall. |
+| 🧰 **Hello Method** | A simple “Hello, Name” method for easy contract testing. |
 
-Refer to the [subscriptionfull-contracts](projects/subscriptionfull-contracts/README.md) folder for overview of working with smart contracts, [projects/subscriptionfull-frontend](projects/subscriptionfull-frontend/README.md) for overview of the React project and the [projects/subscriptionfull-frontend/contracts](projects/subscriptionfull-frontend/src/contracts/README.md) folder for README on adding new smart contracts from backend as application clients on your frontend. The templates provided in these folders will help you get started.
-When you compile and generate smart contract artifacts, your frontend component will automatically generate typescript application clients from smart contract artifacts and move them to `frontend/src/contracts` folder, see [`generate:app-clients` in package.json](projects/subscriptionfull-frontend/package.json). Afterwards, you are free to import and use them in your frontend application.
+---
 
-The frontend starter also provides an example of interactions with your SubscriptionfullClient in [`AppCalls.tsx`](projects/subscriptionfull-frontend/src/components/AppCalls.tsx) component by default.
+## 🧾 Deployed Smart Contract
 
-## Next Steps
+- **Algorand MainNet App ID:** [`749003734`](https://app.dappflow.org/explorer/application/749003734)
 
-You can take this project and customize it to build your own decentralized applications on Algorand. Make sure to understand how to use AlgoKit and how to write smart contracts for Algorand before you start.
-# subscription-payment-manager
+---
+
+## 🧠 How It Works
+
+Each user’s subscription is stored in a **box** on the Algorand blockchain.  
+The contract packs subscription data into 25 bytes for efficiency:
+
+| Data | Size | Description |
+|------|------|-------------|
+| `amount` | 8 bytes | Payment amount (microAlgos) |
+| `interval_days` | 8 bytes | Subscription interval (in seconds) |
+| `last_payment` | 8 bytes | Last payment timestamp |
+| `is_active` | 1 byte | Subscription status (`0x01` = active, `0x00` = inactive) |
+
+All operations — create, check, cancel, delete — are **permissionless** and **on-chain**.
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Python 3.10+
+- [Algopy](https://github.com/algorandfoundation/algopy) SDK
+- An Algorand wallet (e.g., [Pera Wallet](https://perawallet.app/))
+- Access to an Algorand node or [DappFlow](https://app.dappflow.org/)
+
+### Clone the Repository
+```bash
+git clone https://github.com/yourusername/subscription-payment-manager.git
+cd subscription-payment-manager
